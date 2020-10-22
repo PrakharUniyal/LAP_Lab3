@@ -22,7 +22,7 @@ def processfile(textfile):
     #text1 = nltk.Text(ftext)
     sw=nltk.corpus.stopwords.words('english')
     lemma=nltk.WordNetLemmatizer()
-    text=[lemma.lemmatize(w.lower()) for w in tokens if len(w)>3]
+    text=[lemma.lemmatize(w.lower()) for w in tokens if len(w)>2]
     dist=nltk.FreqDist([word for word in text if word not in sw])
     dic=dict(dist)
     sorteddic=sorted(dic.items(), key = lambda ele: ele[1], reverse = True)[:20]
@@ -59,7 +59,7 @@ file_list_column = [
         sg.FileBrowse(),
 
     ],
-    [sg.Button("Edit"), sg.Button("Refresh")],
+    [sg.Button("Stats"), sg.Button("Edit")],
 
     [
 
@@ -116,11 +116,12 @@ while True:
     if event in (None, 'Exit'): 
         break
     
-    if event == 'Edit': 
+    if event == 'Stats': 
         #plt.plot([0.1, 0.2, 0.5, 0.7])
         processfile(values['-FOLDER-'])
         fig=plt.gcf()
         fig_photo = draw_figure(window['-CANVAS-'].TKCanvas, fig)
+        
     if event == 'Extract':
         extractline(values['-FOLDER-'],values['-KeyWord-'])    
     #if event == 'Extract':
