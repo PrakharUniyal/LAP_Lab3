@@ -32,6 +32,19 @@ def processfile(textfile):
     plt.bar([x[0] for x in f],[x[1] for x in f])
     plt.xticks(rotation=45)
     
+def extractline(textfile,keyword):
+    f1 = open(textfile, encoding="utf8")
+    f2 = open(keyword, encoding="utf8")
+    ftext = f1.read()
+    keywords=f2.read().split('\n')
+    sentences=nltk.sent_tokenize(ftext)
+    for sent in sentences:
+        flag=False
+        for word in keywords:
+            if word in sent:
+                flag=True
+        if(flag):
+            window['-EXTRACT-'].print(sent)
 # sg.theme('BrightColors')
 sg.theme('Topanga')
 
@@ -108,6 +121,8 @@ while True:
         processfile(values['-FOLDER-'])
         fig=plt.gcf()
         fig_photo = draw_figure(window['-CANVAS-'].TKCanvas, fig)
+    if event == 'Extract':
+        extractline(values['-FOLDER-'],values['-KeyWord-'])    
     #if event == 'Extract':
         
         #window['-FILE CONTENT-'].print(values['-FOLDER-'])
