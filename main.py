@@ -61,10 +61,19 @@ file_list_column = [
         sg.Canvas(size=(30, 5), key='-CANVAS-')
     ],
     [
-        sg.Button("KeyWords")
+
+        sg.Text("KeyWords File"),
+
+        sg.In(size=(25, 1), enable_events=True, key="-KeyWord-"),
+
+        sg.FileBrowse(),
+
     ],
     [
-        sg.Multiline(size=(50,5), key='keywords')
+        sg.Button("Extract")
+    ],
+    [
+        sg.Multiline(size=(50,5), key='-EXTRACT-')
     ],
 
 ]
@@ -99,6 +108,8 @@ while True:
         processfile(values['-FOLDER-'])
         fig=plt.gcf()
         fig_photo = draw_figure(window['-CANVAS-'].TKCanvas, fig)
+    #if event == 'Extract':
+        
         #window['-FILE CONTENT-'].print(values['-FOLDER-'])
         #window['-FILE CONTENT-'].print("Bye")
         
