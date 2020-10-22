@@ -58,5 +58,9 @@ while True:
 	if event in (None, 'Exit'): 
 		break
 	
-
+	
+	if event == 'Edit': 
+		# Update the "output" text element 
+		# to be the value of "input" element 
+		window['-OUTPUT-'].update(values['xx']) 
 window.close() 
