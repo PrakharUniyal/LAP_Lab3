@@ -22,7 +22,7 @@ nltk
 
 1) Clone this repo using git clone --- 
 2) Go to the folder LAP_Lab3 where you have clone the repo.
-3) Open terminal and execute ./main.py 
+3) Open terminal and execute python main.py 
 
 ### How to use?
 
