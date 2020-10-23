@@ -74,24 +74,38 @@ def extractline(textfile,keyword):
         if(flag):
             window['-EXTRACT-'].print(sentence)
 
+def draw_figure(canvas, figure, loc=(0, 0)):
+    # Standard function for drawing matplotlib figures in PySimpleGUI
+    figure_canvas_agg = FigureCanvasTkAgg(figure, canvas)
+    figure_canvas_agg.draw()
+    figure_canvas_agg.get_tk_widget().pack(side='top', fill='both', expand=1)
+    return figure_canvas_agg
+
+def prompt():
+    # Prompt user for filename input
+    prompt_layout = [[sg.Text("Please provide a file as input.",size=(30,1),justification='center')],[sg.Button("OK",size=(8,1))]]
+    prompt_window = sg.Window('No File Selected',prompt_layout,font="Helvetica 12")
+    event,values = prompt_window.read()
+    if event == 'OK': prompt_window.close()
+
+# GUI Theme
 sg.theme("Black")
 
-go_button = sg.Button("Go",size=(8,1))
-
+# GUI Layout
 file_list_column = [
     [
         sg.Text("File:",size=(4,1)),
         sg.In(size=(36, 1), enable_events=True, key="-FOLDER-"),
         sg.FileBrowse(size=(8,1)),
         sg.Button("Edit",size=(8,1)),
-        go_button
+        sg.Button("Go",size=(8,1))
     ],
     [
         sg.Text("Words: ",size=(6,1)),
         sg.Text("", size=(6, 1), justification='center', key='_WORDS_'),
         sg.Text("Lines: ",size=(6,1)),
         sg.Text("", size=(4, 1), justification='center', key='_LINES_'),
-        sg.Text("Sentences: ",size=(8,1)),
+        sg.Text("Sentences: ",size=(9,1)),
         sg.Text("", size=(4, 1), justification='center', key='_SENTENCES_')
     ],
     [
@@ -117,20 +131,9 @@ layout = [
     ]
 ]
 
-window = sg.Window('Introduction_LAP_LAB3', layout)  
+# Initialize main window
+window = sg.Window('Text Analysis', layout,font="Helvetica 9")  
 window2 = 0
-
-def draw_figure(canvas, figure, loc=(0, 0)):
-    figure_canvas_agg = FigureCanvasTkAgg(figure, canvas)
-    figure_canvas_agg.draw()
-    figure_canvas_agg.get_tk_widget().pack(side='top', fill='both', expand=1)
-    return figure_canvas_agg
-
-def prompt():
-    prompt_layout = [[sg.Text("Please provide a file as input.",size=(30,1),justification='center')],[sg.Button("OK",size=(8,1))]]
-    prompt_window = sg.Window('No File Selected',prompt_layout)
-    event,values = prompt_window.read()
-    if event == 'OK': prompt_window.close()
 
 while True: 
     event, values = window.read() 
@@ -146,7 +149,7 @@ while True:
             window2 = sg.Window("Histogram",layout2,location=(0, 0),finalize=True,element_justification="center",font="Helvetica 18")
             fig=plt.gcf()
             fig_photo = draw_figure(window2['-CANVAS-'].TKCanvas, fig)
-            go_button.Update("Refresh")
+            window["Go"].Update("Refresh")
         else:
             prompt()
 
@@ -166,5 +169,5 @@ while True:
         else:
             prompt()
 
-window2.close()
+if(type(window2)!=int): window2.close()
 window.close()
