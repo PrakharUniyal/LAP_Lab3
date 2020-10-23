@@ -165,5 +165,5 @@ while True:
         else:
             prompt()
 
-window2.close()
+if(type(window2)!=int): window2.close()
 window.close()
