@@ -19,7 +19,7 @@ Given a file of keywords, it can also retrieve sentences containing those.
 Python 3,
 pysimplegui,
 nltk,
-matplotliblib
+matplotlib
 
 ### How to run?
 
