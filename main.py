@@ -62,7 +62,7 @@ file_list_column = [
         sg.FileBrowse(),
 
     ],
-    [sg.Button("Stats"), sg.Button("Edit")],
+    [sg.Button("Stats"), sg.Button("Refresh")],
 
     [
 
@@ -127,7 +127,7 @@ while True:
         
 	
 
-    if event == 'Edit': 
+    if event == 'Refresh': 
         #plt.plot([0.1, 0.2, 0.5, 0.7])
         processfile(values['-FOLDER-'])
         fig=plt.gcf()
