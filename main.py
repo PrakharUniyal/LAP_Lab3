@@ -73,6 +73,20 @@ def extractline(textfile,keyword):
         if(flag):
             window['-EXTRACT-'].print(sentence)
 
+def draw_figure(canvas, figure, loc=(0, 0)):
+    # Standard function for drawing matplotlib figures in PySimpleGUI
+    figure_canvas_agg = FigureCanvasTkAgg(figure, canvas)
+    figure_canvas_agg.draw()
+    figure_canvas_agg.get_tk_widget().pack(side='top', fill='both', expand=1)
+    return figure_canvas_agg
+
+def prompt():
+    # Prompt user for filename input
+    prompt_layout = [[sg.Text("Please provide a file as input.",size=(30,1),justification='center')],[sg.Button("OK",size=(8,1))]]
+    prompt_window = sg.Window('No File Selected',prompt_layout)
+    event,values = prompt_window.read()
+    if event == 'OK': prompt_window.close()
+
 sg.theme("Black")
 
 go_button = sg.Button("Go",size=(8,1))
@@ -118,18 +132,6 @@ layout = [
 
 window = sg.Window('Introduction_LAP_LAB3', layout)  
 window2 = 0
-
-def draw_figure(canvas, figure, loc=(0, 0)):
-    figure_canvas_agg = FigureCanvasTkAgg(figure, canvas)
-    figure_canvas_agg.draw()
-    figure_canvas_agg.get_tk_widget().pack(side='top', fill='both', expand=1)
-    return figure_canvas_agg
-
-def prompt():
-    prompt_layout = [[sg.Text("Please provide a file as input.",size=(30,1),justification='center')],[sg.Button("OK",size=(8,1))]]
-    prompt_window = sg.Window('No File Selected',prompt_layout)
-    event,values = prompt_window.read()
-    if event == 'OK': prompt_window.close()
 
 while True: 
     event, values = window.read() 
