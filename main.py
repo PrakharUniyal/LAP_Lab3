@@ -1,6 +1,7 @@
 import PySimpleGUI as sg 
 import nltk
-import os.path
+import os
+import sys
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
@@ -37,8 +38,11 @@ def processfile(textfile):
         least_freq = sorted_freq_map[-1][0]
 
         # Print stats
-        answer = "No. of words: " + no_of_words +'\nNo. of sentences: ' + no_of_sentences + "\nNo. of newlines: " + no_of_lines + "\nMost frequent word: " + most_freq + "\nLeast frequent word: " + least_freq
-        window['-FILE CONTENT-'].update(value = answer)
+        window['_WORDS_'].update(no_of_words)
+        window['_SENTENCES_'].update(no_of_sentences)
+        window['_LINES_'].update(no_of_lines)
+        window['_MF_'].update(most_freq)
+        window['_LF_'].update(least_freq)
         
         # Plotting the frequency of 20 most frequent words
         f=[[x,y] for x,y in sorted_freq_map][:20]
@@ -71,73 +75,49 @@ def extractline(textfile,keyword):
 
 sg.theme("Black")
 
+go_button = sg.Button("Go",size=(8,1))
+
 file_list_column = [
-
     [
-
-        sg.Text("File"),
-
-        sg.In(size=(25, 1), enable_events=True, key="-FOLDER-"),
-
-        sg.FileBrowse(),
-
-    ],
-    [sg.Button("Stats"), sg.Button("Refresh")],
-
-    [
-
-        sg.Multiline(
-
-              size=(50, 5), key="-FILE CONTENT-"
-
-        )
-
+        sg.Text("File:",size=(4,1)),
+        sg.In(size=(36, 1), enable_events=True, key="-FOLDER-"),
+        sg.FileBrowse(size=(8,1)),
+        sg.Button("Edit",size=(8,1)),
+        go_button
     ],
     [
-
-        sg.Text("KeyWords File"),
-
-        sg.In(size=(25, 1), enable_events=True, key="-KeyWord-"),
-
-        sg.FileBrowse(),
-
+        sg.Text("Words: ",size=(6,1)),
+        sg.Text("", size=(6, 1), justification='center', key='_WORDS_'),
+        sg.Text("Lines: ",size=(6,1)),
+        sg.Text("", size=(4, 1), justification='center', key='_LINES_'),
+        sg.Text("Sentences: ",size=(8,1)),
+        sg.Text("", size=(4, 1), justification='center', key='_SENTENCES_')
     ],
     [
-        sg.Button("Extract")
+        sg.Text("Most frequent: ",size=(12,1)),
+        sg.Text("", size=(11, 1), key='_MF_'),
+        sg.Text("Least freqeunt: ",size=(12,1)),
+        sg.Text("", size=(11, 1), key='_LF_')
     ],
     [
-        sg.Multiline(size=(50,5), key='-EXTRACT-')
+        sg.Text("Keywords File:",size=(12,1)),
+        sg.In(size=(38, 1), enable_events=True, key="-KeyWord-"),
+        sg.FileBrowse(size=(8,1)),
+        sg.Button("Extract",size=(8,1))
     ],
-
-]
-layout = [
-
     [
-
-        sg.Column(file_list_column),
-
-
+        sg.Multiline(size=(74,15), key='-EXTRACT-')
     ]
+]
 
-]  
-
+layout = [
+    [
+        sg.Column(file_list_column,justification='center'),
+    ]
+]
 
 window = sg.Window('Introduction_LAP_LAB3', layout)  
-
-
-layout2 = [
-    [sg.Text("Plot between words and frequency")],
-    [sg.Canvas(key="-CANVAS-")],
-]     
-
-window2 = sg.Window(
-    "Matplotlib Single Graph",
-    layout2,
-    location=(0, 0),
-    finalize=True,
-    element_justification="center",
-    font="Helvetica 18",
-)    
+window2 = 0
 
 def draw_figure(canvas, figure, loc=(0, 0)):
     figure_canvas_agg = FigureCanvasTkAgg(figure, canvas)
@@ -145,56 +125,23 @@ def draw_figure(canvas, figure, loc=(0, 0)):
     figure_canvas_agg.get_tk_widget().pack(side='top', fill='both', expand=1)
     return figure_canvas_agg
 
-
 while True: 
     event, values = window.read() 
-    #print(event, values) 
     
     if event in (None, 'Exit'): 
         break
     
-    if event == 'Stats': 
-        #plt.plot([0.1, 0.2, 0.5, 0.7])
+    if event == 'Go':
+        if(type(window2)!=int): window2.close()
         processfile(values['-FOLDER-'])
+        layout2 = [[sg.Text("Histogram of word frequencies")],[sg.Canvas(key="-CANVAS-")]]
+        window2 = sg.Window("Histogram",layout2,location=(0, 0),finalize=True,element_justification="center",font="Helvetica 18")
         fig=plt.gcf()
         fig_photo = draw_figure(window2['-CANVAS-'].TKCanvas, fig)
-        
-    
-
-    if event == 'Refresh': 
-        window2.close()
-        layout2 = [
-                        [sg.Text("Plot between words and frequency")],
-                        [sg.Canvas(key="-CANVAS-")],
-                      ]
-        window2 = sg.Window(
-                    "Matplotlib Single Graph",
-                    layout2,
-                    location=(0, 0),
-                    finalize=True,
-                    element_justification="center",
-                    font="Helvetica 18",
-                    ) 
-        #plt.plot([0.1, 0.2, 0.5, 0.7])
-        processfile(values['-FOLDER-'])
-        fig=plt.gcf()
-        fig_photo = draw_figure(window2['-CANVAS-'].TKCanvas, fig)
-
-
+        go_button.Update("Refresh")
 
     if event == 'Extract':
-        extractline(values['-FOLDER-'],values['-KeyWord-'])    
-    #if event == 'Extract':
-        
-        #window['-FILE CONTENT-'].print(values['-FOLDER-'])
-        #window['-FILE CONTENT-'].print("Bye")
-        
-        #print(values['-FOLDER-'])
-        
-        #Update the "output" text element 
-        # to be the value of "input" element 
-        
-       # window['-OUTPUT-'].update(values['xx']) 
+        extractline(values['-FOLDER-'],values['-KeyWord-'])
 
-window.close() 
 window2.close()
+window.close()
