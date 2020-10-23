@@ -140,6 +140,12 @@ while True:
         fig_photo = draw_figure(window2['-CANVAS-'].TKCanvas, fig)
         go_button.Update("Refresh")
 
+    if event == 'Edit':
+        if sys.platform=='win32':
+            os.system('Notepad '+values['-FOLDER-'])
+        elif sys.platform=='Linux':
+            os.system('gedit '+values['-FOLDER-'])
+
     if event == 'Extract':
         extractline(values['-FOLDER-'],values['-KeyWord-'])
 
