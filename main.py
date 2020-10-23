@@ -101,7 +101,25 @@ layout = [
 
     ]
 
-]   
+]  
+
+
+window = sg.Window('Introduction_LAP_LAB3', layout)  
+
+
+layout2 = [
+    [sg.Text("Plot test")],
+    [sg.Canvas(key="-CANVAS-")],
+]     
+
+window2 = sg.Window(
+    "Matplotlib Single Graph",
+    layout2,
+    location=(0, 0),
+    finalize=True,
+    element_justification="center",
+    font="Helvetica 18",
+)    
 
 def draw_figure(canvas, figure, loc=(0, 0)):
     figure_canvas_agg = FigureCanvasTkAgg(figure, canvas)
@@ -109,7 +127,6 @@ def draw_figure(canvas, figure, loc=(0, 0)):
     figure_canvas_agg.get_tk_widget().pack(side='top', fill='both', expand=1)
     return figure_canvas_agg
 
-window = sg.Window('Introduction_LAP_LAB3', layout) 
 
 while True: 
     event, values = window.read() 
@@ -121,8 +138,8 @@ while True:
     if event == 'Stats': 
         #plt.plot([0.1, 0.2, 0.5, 0.7])
         processfile(values['-FOLDER-'])
-        #fig=plt.gcf()
-        #fig_photo = draw_figure(window['-CANVAS-'].TKCanvas, fig)
+        fig=plt.gcf()
+        fig_photo = draw_figure(window2['-CANVAS-'].TKCanvas, fig)
         
 	
 
@@ -149,4 +166,4 @@ while True:
        # window['-OUTPUT-'].update(values['xx']) 
 
 window.close() 
-    
+window2.close()
