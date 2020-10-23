@@ -31,7 +31,7 @@ def processfile(textfile):
     	window['-FILE CONTENT-'].print("Most frequent word:",sorteddic[0][0])
     	answer = "No. of words: " + str(len(tokens)) +'\nNo. of sentences: ' + str(len(sentences)) + "\nNo. of newlines: " + str(len(nwln)) + "\nMost frequent word: " + str(sorteddic[0][0])
     	window['-FILE CONTENT-'].update(value = answer)  
-    
+    	plt.clf() 
     	plt.bar([x[0] for x in f],[x[1] for x in f])
     	plt.xticks(rotation=45)
     except FileNotFoundError :
