@@ -76,9 +76,6 @@ file_list_column = [
 
     ],
     [
-        sg.Canvas(size=(30, 5), key='-CANVAS-')
-    ],
-    [
 
         sg.Text("KeyWords File"),
 
@@ -124,16 +121,16 @@ while True:
     if event == 'Stats': 
         #plt.plot([0.1, 0.2, 0.5, 0.7])
         processfile(values['-FOLDER-'])
-        fig=plt.gcf()
-        fig_photo = draw_figure(window['-CANVAS-'].TKCanvas, fig)
+        #fig=plt.gcf()
+        #fig_photo = draw_figure(window['-CANVAS-'].TKCanvas, fig)
         
 	
 
     if event == 'Refresh': 
         #plt.plot([0.1, 0.2, 0.5, 0.7])
         processfile(values['-FOLDER-'])
-        fig=plt.gcf()
-        fig_photo = draw_figure(window['-CANVAS-'].TKCanvas, fig)
+        #fig=plt.gcf()
+        #fig_photo = draw_figure(window['-CANVAS-'].TKCanvas, fig)
 
 
 
