@@ -125,6 +125,16 @@ while True:
         fig=plt.gcf()
         fig_photo = draw_figure(window['-CANVAS-'].TKCanvas, fig)
         
+	
+
+    if event == 'Edit': 
+        #plt.plot([0.1, 0.2, 0.5, 0.7])
+        processfile(values['-FOLDER-'])
+        fig=plt.gcf()
+        fig_photo = draw_figure(window['-CANVAS-'].TKCanvas, fig)
+
+
+
     if event == 'Extract':
         extractline(values['-FOLDER-'],values['-KeyWord-'])    
     #if event == 'Extract':
