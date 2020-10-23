@@ -62,6 +62,7 @@ def extractline(textfile,keyword):
     # Keywords
     f2 = open(keyword, encoding="utf8")
     keywords=f2.read().split('\n')
+    keywords.remove("")
     f2.close()
 
     for sentence in sentences:
