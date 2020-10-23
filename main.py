@@ -108,7 +108,7 @@ window = sg.Window('Introduction_LAP_LAB3', layout)
 
 
 layout2 = [
-    [sg.Text("Plot test")],
+    [sg.Text("Plot between words and frequency")],
     [sg.Canvas(key="-CANVAS-")],
 ]     
 
@@ -146,7 +146,7 @@ while True:
     if event == 'Refresh': 
 	window2.close()
 	layout2 = [
-                    [sg.Text("Plot test")],
+                    [sg.Text("Plot between words and frequency")],
                     [sg.Canvas(key="-CANVAS-")],
                   ]
 	window2 = sg.Window(
