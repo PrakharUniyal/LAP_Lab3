@@ -49,7 +49,7 @@ def extractline(textfile,keyword):
         if(flag):
             window['-EXTRACT-'].print(sent)
 # sg.theme('BrightColors')
-sg.theme('Topanga')
+sg.theme("Black")
 
 file_list_column = [
 
