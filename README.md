@@ -13,6 +13,8 @@ The app is capable of providing common statistics of the text like no. of words,
 It will also show a histogram of the most frequently used words in the text.
 Given a file of keywords, it can also retrieve sentences containing those.
 
+ This is README. For more related docs, see the wiki page of this project.
+
 **Requirements**
 Python 3,
 pysimplegui,
