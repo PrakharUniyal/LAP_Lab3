@@ -13,17 +13,21 @@ def processfile(textfile):
     f = open(textfile, encoding="utf8")
     ftext = f.read()
     nwln=ftext.split('\n')
+    nwords=0
+    for line in nwln:
+        nwords+=len(line.split())
+    
     # If you would like to work with the novel in nltk.Text format you can use 'text1'
     tokens = nltk.word_tokenize(ftext)
     sentences=nltk.sent_tokenize(ftext)
-    window['-FILE CONTENT-'].print("No. of words:",len(tokens))
+    window['-FILE CONTENT-'].print("No. of words:",nwords)
     window['-FILE CONTENT-'].print("No. of sentences:",len(sentences))
     window['-FILE CONTENT-'].print("No. of newlines:",len(nwln))
     #text1 = nltk.Text(ftext)
     sw=nltk.corpus.stopwords.words('english')
     lemma=nltk.WordNetLemmatizer()
     text=[lemma.lemmatize(w.lower()) for w in tokens if len(w)>2]
-    dist=nltk.FreqDist([word for word in text if word not in sw])
+    dist=nltk.FreqDist([word for word in text if word not in sw and len(word)>2])
     dic=dict(dist)
     sorteddic=sorted(dic.items(), key = lambda ele: ele[1], reverse = True)[:20]
     window['-FILE CONTENT-'].print("Most frequent word:",sorteddic[0][0])
