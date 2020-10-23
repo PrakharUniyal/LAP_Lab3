@@ -5,37 +5,48 @@ import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 def processfile(textfile):
-    
-#from nltk.stem import WordNetLemmatizer
-#from nltk.probability import FreqDist
-    
     try:
         f = open(textfile, encoding="utf8")
         ftext = f.read()
-        nwln=ftext.split('\n')
-        nwords=0
-        for line in nwln:
-            nwords+=len(line.split())
+        f.close()
+
+        # Calculate number of lines
+        no_of_lines = str(len(ftext.split('\n')))
     
-        # If you would like to work with the novel in nltk.Text format you can use 'text1'
-        tokens = nltk.word_tokenize(ftext)
-        sentences=nltk.sent_tokenize(ftext)
-    
-        #text1 = nltk.Text(ftext)
-        sw=nltk.corpus.stopwords.words('english')
-        lemma=nltk.WordNetLemmatizer()
-        text=[lemma.lemmatize(w.lower()) for w in tokens if len(w)>2]
-        dist=nltk.FreqDist([word for word in text if word not in sw and len(word)>2])
-        dic=dict(dist)
-        sorteddic=sorted(dic.items(), key = lambda ele: ele[1], reverse = True)[:20]
-        window['-FILE CONTENT-'].print("Most frequent word:",sorteddic[0][0])
-        answer = "No. of words: " + str(len(tokens)) +'\nNo. of sentences: ' + str(len(sentences)) + "\nNo. of newlines: " + str(len(nwln)) + "\nMost frequent word: " + str(sorteddic[0][0])
+        # Calculate number of sentences
+        sentence_tokens = nltk.sent_tokenize(ftext)
+        no_of_sentences = str(len(sentence_tokens))
+
+        # Calculate number of words
+        word_tokens = nltk.word_tokenize(ftext)
+        punctuation_removed_word_tokens = [token for token in word_tokens if token.isalnum()]
+        no_of_words = str(len(punctuation_removed_word_tokens))
+
+        # Calculating most and least frequent words (excluding common words)
+        lemma = nltk.WordNetLemmatizer()
+        lemmatized_words = [lemma.lemmatize(token.lower()) for token in punctuation_removed_word_tokens]
+        
+        stop_words = set(nltk.corpus.stopwords.words('english'))
+        relevant_words = [word for word in lemmatized_words if word not in stop_words and len(word)>2]
+
+        freq_dist = nltk.FreqDist(relevant_words)
+        freq_map = dict(freq_dist)
+
+        sorted_freq_map = sorted(freq_map.items(), key = lambda elem: elem[1], reverse = True)
+        most_freq = sorted_freq_map[0][0]
+        least_freq = sorted_freq_map[-1][0]
+
+        # Print stats
+        answer = "No. of words: " + no_of_words +'\nNo. of sentences: ' + no_of_sentences + "\nNo. of newlines: " + no_of_lines + "\nMost frequent word: " + most_freq + "\nLeast frequent word: " + least_freq
         window['-FILE CONTENT-'].update(value = answer)
-        f=[[x,y] for x,y in sorteddic]  
-        plt.clf() 
+        
+        # Plotting the frequency of 20 most frequent words
+        f=[[x,y] for x,y in sorted_freq_map][:20]
+        plt.clf()
         plt.bar([x[0] for x in f],[x[1] for x in f])
         plt.xticks(rotation=45)
-    except FileNotFoundError :
+
+    except FileNotFoundError:
         pass
     
 def extractline(textfile,keyword):
