@@ -50,19 +50,25 @@ def processfile(textfile):
         pass
     
 def extractline(textfile,keyword):
+    # Sentences
     f1 = open(textfile, encoding="utf8")
+    sentences=nltk.sent_tokenize(f1.read())
+    f1.close()
+    
+    # Keywords
     f2 = open(keyword, encoding="utf8")
-    ftext = f1.read()
     keywords=f2.read().split('\n')
-    sentences=nltk.sent_tokenize(ftext)
-    for sent in sentences:
+    f2.close()
+
+    for sentence in sentences:
         flag=False
-        for word in keywords:
-            if word in sent:
+        for keyword in keywords:
+            if keyword in sentence:
                 flag=True
+                break
         if(flag):
-            window['-EXTRACT-'].print(sent)
-# sg.theme('BrightColors')
+            window['-EXTRACT-'].print(sentence)
+
 sg.theme("Black")
 
 file_list_column = [
