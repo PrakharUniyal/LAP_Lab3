@@ -20,9 +20,7 @@ def processfile(textfile):
     # If you would like to work with the novel in nltk.Text format you can use 'text1'
     tokens = nltk.word_tokenize(ftext)
     sentences=nltk.sent_tokenize(ftext)
-    window['-FILE CONTENT-'].print("No. of words:",nwords)
-    window['-FILE CONTENT-'].print("No. of sentences:",len(sentences))
-    window['-FILE CONTENT-'].print("No. of newlines:",len(nwln))
+    
     #text1 = nltk.Text(ftext)
     sw=nltk.corpus.stopwords.words('english')
     lemma=nltk.WordNetLemmatizer()
@@ -31,8 +29,9 @@ def processfile(textfile):
     dic=dict(dist)
     sorteddic=sorted(dic.items(), key = lambda ele: ele[1], reverse = True)[:20]
     window['-FILE CONTENT-'].print("Most frequent word:",sorteddic[0][0])
+    answer = "No. of words: " + str(len(tokens)) +'\nNo. of sentences: ' + str(len(sentences)) + "\nNo. of newlines: " + str(len(nwln)) + "\nMost frequent word: " + str(sorteddic[0][0])
+    window['-FILE CONTENT-'].update(value = answer)  
     
-    f=[[x,y] for x,y in sorteddic]
     plt.bar([x[0] for x in f],[x[1] for x in f])
     plt.xticks(rotation=45)
     
