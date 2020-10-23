@@ -144,10 +144,23 @@ while True:
 	
 
     if event == 'Refresh': 
+	window2.close()
+	layout2 = [
+                    [sg.Text("Plot test")],
+                    [sg.Canvas(key="-CANVAS-")],
+                  ]
+	window2 = sg.Window(
+                "Matplotlib Single Graph",
+                layout2,
+                location=(0, 0),
+                finalize=True,
+                element_justification="center",
+                font="Helvetica 18",
+                ) 
         #plt.plot([0.1, 0.2, 0.5, 0.7])
         processfile(values['-FOLDER-'])
-        #fig=plt.gcf()
-        #fig_photo = draw_figure(window['-CANVAS-'].TKCanvas, fig)
+        fig=plt.gcf()
+        fig_photo = draw_figure(window2['-CANVAS-'].TKCanvas, fig)
 
 
 
