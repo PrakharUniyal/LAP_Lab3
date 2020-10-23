@@ -125,6 +125,12 @@ def draw_figure(canvas, figure, loc=(0, 0)):
     figure_canvas_agg.get_tk_widget().pack(side='top', fill='both', expand=1)
     return figure_canvas_agg
 
+def prompt():
+    prompt_layout = [[sg.Text("Please provide a file as input.",size=(30,1),justification='center')],[sg.Button("OK",size=(8,1))]]
+    prompt_window = sg.Window('No File Selected',prompt_layout)
+    event,values = prompt_window.read()
+    if event == 'OK': prompt_window.close()
+
 while True: 
     event, values = window.read() 
     
@@ -132,22 +138,32 @@ while True:
         break
     
     if event == 'Go':
-        if(type(window2)!=int): window2.close()
-        processfile(values['-FOLDER-'])
-        layout2 = [[sg.Text("Histogram of word frequencies")],[sg.Canvas(key="-CANVAS-")]]
-        window2 = sg.Window("Histogram",layout2,location=(0, 0),finalize=True,element_justification="center",font="Helvetica 18")
-        fig=plt.gcf()
-        fig_photo = draw_figure(window2['-CANVAS-'].TKCanvas, fig)
-        go_button.Update("Refresh")
+        if(values['-FOLDER-']!=''):
+            if(type(window2)!=int): window2.close()
+            processfile(values['-FOLDER-'])
+            layout2 = [[sg.Text("Histogram of word frequencies")],[sg.Canvas(key="-CANVAS-")]]
+            window2 = sg.Window("Histogram",layout2,location=(0, 0),finalize=True,element_justification="center",font="Helvetica 18")
+            fig=plt.gcf()
+            fig_photo = draw_figure(window2['-CANVAS-'].TKCanvas, fig)
+            go_button.Update("Refresh")
+        else:
+            prompt()
+
 
     if event == 'Edit':
-        if sys.platform=='win32':
-            os.system('Notepad '+values['-FOLDER-'])
-        elif sys.platform=='Linux':
-            os.system('gedit '+values['-FOLDER-'])
+        if(values['-FOLDER-']!=''):
+            if sys.platform=='win32':
+                os.system('Notepad '+values['-FOLDER-'])
+            elif sys.platform=='Linux':
+                os.system('gedit '+values['-FOLDER-'])
+        else:
+            prompt()
 
     if event == 'Extract':
-        extractline(values['-FOLDER-'],values['-KeyWord-'])
+        if(values['-FOLDER-']!='' and values['-KeyWord-']!=''):
+            extractline(values['-FOLDER-'],values['-KeyWord-'])
+        else:
+            prompt()
 
 window2.close()
 window.close()
